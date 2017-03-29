@@ -42,4 +42,24 @@ public class Binary {
         return true;
     }
 
+    private boolean isColNumberOnesEqual(){
+        int[] colOnesNumber = new int[board.length];
+        for (int i = 0; i < board.length; i++){
+            int numOfOnes = 0;
+            for (int j = 0; j < board[0].length; j++){
+                if(board[j][i] == 1)
+                    numOfOnes++;
+            }
+            colOnesNumber[i] = numOfOnes;
+        }
+
+        int num = colOnesNumber[0];
+        for (int i = 1; i < colOnesNumber.length; i++){
+            if(num != colOnesNumber[i])
+                return false;
+        }
+
+        return true;
+    }
+
 }
