@@ -22,6 +22,21 @@ public class Binary {
         return true;
     }
 
+    private boolean areOnlyTwoSymbolsNextToInRow(){
+        for(int i = 0; i < board.length; i++){
+            int numOfElems = 0;
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == 1)
+                    numOfElems++;
+                else
+                    numOfElems--;
+            }
+            if(numOfElems == 3 || numOfElems == -3)
+                return false;
+        }
+        return true;
+    }
+
     private boolean isRowNumberOnesEqual(){
         int[] rowOnesNumber = new int[board.length];
         for (int i = 0; i < board.length; i++){
