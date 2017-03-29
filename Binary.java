@@ -9,6 +9,8 @@ public class Binary {
 
     public Binary(int[][] puzzle){
         board = puzzle;
+        isColNumberOnesEqual();
+        isRowNumberOnesEqual();
     }
 
     private boolean isSolved(){
@@ -60,6 +62,44 @@ public class Binary {
         }
 
         return true;
+    }
+
+   private int numOfZerosInCol(int col){
+        return board.length - numOfOnesInCol(col);
+   }
+
+   private int numOfZerosInRow(int row){
+       return board.length - numOfOnesInRow(row);
+   }
+
+    private int numOfOnesInCol(int col){
+        int numOfOnes = 0;
+        for(int i = 0; i < board.length; i++){
+            if(board[i][col] == 1)
+                numOfOnes++;
+        }
+
+        return numOfOnes;
+    }
+
+    private int numOfOnesInRow(int row){
+        int numOfOnes = 0;
+        for(int i = 0; i < board.length; i++){
+            if(board[row][i] == 1)
+                numOfOnes++;
+        }
+
+        return numOfOnes;
+    }
+
+    public static void main(String[] args){
+        int[][] puzzle = {
+                {1,1,0,0},
+                {1,0,1,0},
+                {0,1,0,1},
+                {0,0,1,1}
+        };
+        Binary b = new Binary(puzzle);
     }
 
 }
