@@ -1,10 +1,10 @@
 /**
  * Created by GreggJakubiak on 30.03.2017.
  */
-public class Tuple<X,Y> {
-    public final X x;
-    public final Y y;
-    public Tuple(X x, Y y) {
+public class Tuple {
+    public final int x;
+    public final int y;
+    public Tuple(int x, int y) {
         this.x = x;
         this.y = y;
     }
