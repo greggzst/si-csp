@@ -63,6 +63,34 @@ public class Binary {
     }
 
 
+    private boolean isNumberInRowAndColConsistent(int row, int col, int symbol){
+        int symRowOccurence = 0;
+        int symColOccurence = 0;
+
+        for(int i = 0; i < board.length; i++){
+            if(board[row][i] == symbol){
+                symRowOccurence++;
+            }else{
+                symRowOccurence = 0;
+            }
+
+            if(symRowOccurence >= 3){
+                return false;
+            }
+
+            if(board[i][col] == symbol){
+                symColOccurence++;
+            }else{
+                symColOccurence = 0;
+            }
+
+            if(symColOccurence >= 3){
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 
 
