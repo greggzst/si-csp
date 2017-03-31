@@ -20,11 +20,12 @@ public class Graph {
         int row = first[0];
         int col = first[1];
 
-        if(row == -1 || col == -1)
+        if(row == -1)
             return true;
 
         for(int c = 1; c <= colours; c++){
             if(canBeColoured(row,col,c)){
+                graph[row][col] = c;
                 if(colourGraph()){
                     return true;
                 }
@@ -91,20 +92,19 @@ public class Graph {
         Tuple t1 = null;
         Tuple t2 = null;
 
-        graph[row][col] = colour;
 
         if(row == 0 && col ==0){
             return true;
         }
         else if (row != 0 && col == 0){
-            t1 = new Tuple(graph[row-1][col],graph[row][col]);
+            t1 = new Tuple(graph[row-1][col],colour);
 
         }else if (row == 0 && col != 0){
-            t2 = new Tuple(graph[row][col - 1], graph[row][col]);
+            t2 = new Tuple(graph[row][col - 1], colour);
         }
         else if (row != 0 && col != 0){
-            t1 = new Tuple(graph[row - 1][col], graph[row][col]);
-            t2 = new Tuple(graph[row][col - 1],graph[row][col]);
+            t1 = new Tuple(graph[row - 1][col], colour);
+            t2 = new Tuple(graph[row][col - 1], colour);
 
         }
 
@@ -120,7 +120,6 @@ public class Graph {
         }
 
         if(hasFirstTuple || hasSecondTuple){
-            graph[row][col] = 0;
             return false;
         }
 
@@ -144,7 +143,7 @@ public class Graph {
     }
 
     public static void main(String[] args){
-        Graph g = new Graph(16);
+        Graph g = new Graph(4);
         g.print();
         g.colourGraph();
         System.out.println();
