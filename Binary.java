@@ -9,6 +9,7 @@ import java.util.Random;
  */
 public class Binary {
     private int[][] board;
+    private int[] domain = {0,1};
 
     public Binary(int n){
         board = new int[n][n];
@@ -17,6 +18,33 @@ public class Binary {
                 board[i][j] = -1;
             }
         }
+    }
+
+    public boolean solve(){
+        return solveBacktrack(board);
+    }
+
+    private boolean solveBacktrack(int[][] puzzle){
+        int[] where = findFirstEmpty();
+        int row = where[0];
+        int col = where[1];
+
+        if(row == -1)
+            return true;
+
+        for(Integer d : domain){
+            board[row][col] = d;
+
+            if(areConstraintsSatisfied()){
+                if(solveBacktrack(puzzle)){
+                    return true;
+                }else{
+                    board[row][col] = -1;
+                }
+            }
+        }
+
+        return false;
     }
 
     private int[] findFirstEmpty(){
@@ -33,5 +61,40 @@ public class Binary {
 
         return where;
     }
+
+
+
+
+
+
+    private boolean areConstraintsSatisfied(){
+        return true;
+    }
+
+    public void print(){
+        for(int[] b : board){
+            for(Integer i : b){
+                if(i != -1)
+                    System.out.print(i);
+                else
+                    System.out.print("-");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args){
+        int[][] puzzle = {
+                {1,1,0,0},
+                {1,0,1,0},
+                {0,1,0,1},
+                {0,0,1,1}
+        };
+        Binary b = new Binary(4);
+        b.print();
+        b.solve();
+        b.print();
+    }
+
 
 }
