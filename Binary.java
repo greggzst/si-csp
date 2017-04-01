@@ -33,9 +33,10 @@ public class Binary {
             return true;
 
         for(Integer d : domain){
-            board[row][col] = d;
-
             if(areConstraintsSatisfied()){
+
+                board[row][col] = d;
+
                 if(solveBacktrack(puzzle)){
                     return true;
                 }else{
@@ -62,6 +63,22 @@ public class Binary {
         return where;
     }
 
+    private int[] getCol(int col){
+        int[] column = new int[board.length];
+        for(int i = 0; i < board.length; i++){
+            column[i] = board[i][col];
+        }
+
+        return column;
+    }
+
+    private int[] getRow(int rowNum){
+        int[] row = new int[board.length];
+        for(int i = 0; i < board.length; i++){
+            row[i] = board[rowNum][i];
+        }
+        return row;
+    }
 
     private boolean isNumberInRowAndColConsistent(int row, int col, int symbol){
         int symRowOccurence = 0;
