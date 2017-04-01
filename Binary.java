@@ -210,7 +210,26 @@ public class Binary {
         return true;
     }
 
+    private boolean nHasOnesAndZeros(int row, int col, int symbol){
+        board[row][col] = symbol;
 
+        int[] rowOfInsertion = getRow(row);
+        int[] colOfInsertion = getCol(col);
+
+        int zerosInRow = countSymbolOccurence(rowOfInsertion,0);
+        int onesInRow = countSymbolOccurence(rowOfInsertion,1);
+        int zerosInCol = countSymbolOccurence(colOfInsertion,0);
+        int onesInCol = countSymbolOccurence(colOfInsertion,1);
+
+        board[row][col] = -1;
+
+        if(zerosInRow > board.length || zerosInCol > board.length || onesInRow > board.length || onesInCol > board.length){
+            return false;
+        }
+
+        return true;
+
+    }
 
 
     private boolean areConstraintsSatisfied(int row, int col, int symbol){
