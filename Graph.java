@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -8,11 +9,29 @@ public class Graph {
     private int colours;
     private int[][] graph;
     private List<Tuple> colourPairs;
+    private HashMap<int[],List<Integer>> variableValuesList;
 
     public Graph(int n){
         graph = new int[n][n];
         colours = n % 2 == 0 ? 2 * n : 2 * n + 1;
         colourPairs = new ArrayList<>();
+        variableValuesList = new HashMap<>();
+
+        List<Integer> coloursList = new ArrayList<>();
+        for(int c = 0; c <= colours; c++){
+            coloursList.add(c);
+        }
+
+        for(int i = 0; i < graph.length; i++){
+            for(int j = 0; j < graph.length; j++){
+                int[] elem = new int[2];
+                elem[0] = i;
+                elem[1] = j;
+
+                variableValuesList.put(elem,coloursList);
+            }
+        }
+
     }
 
     public boolean colourGraph(){
