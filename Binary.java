@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class Binary {
     private int[][] board;
-    private int[] domain = {0,1};
+    private int[] domain = {1,0};
 
     public Binary(int n){
         board = new int[n][n];
@@ -223,7 +223,9 @@ public class Binary {
 
         board[row][col] = -1;
 
-        if(zerosInRow > board.length || zerosInCol > board.length || onesInRow > board.length || onesInCol > board.length){
+        int n = board.length % 2 == 0 ? board.length / 2 : board.length;
+
+        if(zerosInRow > n || zerosInCol > n|| onesInRow > n || onesInCol > n){
             return false;
         }
 
@@ -233,7 +235,10 @@ public class Binary {
 
 
     private boolean areConstraintsSatisfied(int row, int col, int symbol){
-        return isNumberOfSymbolsNextToInRowAndColConsistent(row,col,symbol) && isNumberOfSymbolsInRowAndColConsistent(row,col,symbol) && areRowAndColUnique(row,col,symbol);
+        return isNumberOfSymbolsNextToInRowAndColConsistent(row,col,symbol)
+                && isNumberOfSymbolsInRowAndColConsistent(row,col,symbol)
+                && areRowAndColUnique(row,col,symbol)
+                && nHasOnesAndZeros(row,col,symbol);
     }
 
     public void print(){
@@ -249,7 +254,7 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(3);
+        Binary b = new Binary(4);
         b.print();
         b.solve();
         b.print();
