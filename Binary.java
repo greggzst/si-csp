@@ -123,6 +123,15 @@ public class Binary {
         return row;
     }
 
+    private int countSymbolOccurence(int[] array, int symbol){
+        int occurence = 0;
+        for(int i = 0; i < array.length; i++){
+            if(array[i] == symbol)
+                occurence++;
+        }
+        return occurence;
+    }
+
     private boolean isNumberOfSymbolsNextToInRowAndColConsistent(int row, int col, int symbol){
         int symRowOccurence = 0;
         int symColOccurence = 0;
