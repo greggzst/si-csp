@@ -33,8 +33,7 @@ public class Binary {
             return true;
 
         for(Integer d : domain){
-            if(areConstraintsSatisfied()){
-
+            if(areConstraintsSatisfied(row,col,d)){
                 board[row][col] = d;
 
                 if(solveBacktrack(puzzle)){
@@ -116,11 +115,7 @@ public class Binary {
     }
 
     private int[] getRow(int rowNum){
-        int[] row = new int[board.length];
-        for(int i = 0; i < board.length; i++){
-            row[i] = board[rowNum][i];
-        }
-        return row;
+        return board[rowNum];
     }
 
     private int countSymbolOccurence(int[] array, int symbol){
@@ -132,16 +127,12 @@ public class Binary {
         return occurence;
     }
 
-    private boolean isNumberOfSymbolsInRowAndColConsistent(int row, int col){
-        int[] colOfInsertion = getCol(col);
+    private boolean isNumberOfSymbolsInRowAndColConsistent(int row, int col,int symbol){
+        board[row][col] = symbol;
+
         int[] rowOfInsertion = getRow(row);
 
-        int numberOfZerosInCol = countSymbolOccurence(colOfInsertion,0);
-        int numberOfOnesInCol = countSymbolOccurence(colOfInsertion,1);
-        int numberOfZerosInRow = countSymbolOccurence(rowOfInsertion,0);
-        int numberOfOnesInRow = countSymbolOccurence(rowOfInsertion, 1);
 
-        return (numberOfOnesInCol == numberOfOnesInRow) && (numberOfZerosInCol == numberOfZerosInRow);
     }
 
     private boolean isNumberOfSymbolsNextToInRowAndColConsistent(int row, int col, int symbol){
@@ -176,8 +167,8 @@ public class Binary {
 
 
 
-    private boolean areConstraintsSatisfied(){
-        return true;
+    private boolean areConstraintsSatisfied(int row, int col, int symbol){
+        return isNumberOfSymbolsNextToInRowAndColConsistent(row,col,symbol) && isNumberOfSymbolsInRowAndColConsistent(row,col,symbol) && areRowAndColUnique(row,col,symbol);
     }
 
     public void print(){
@@ -193,12 +184,6 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        int[][] puzzle = {
-                {1,1,0,0},
-                {1,0,1,0},
-                {0,1,0,1},
-                {0,0,1,1}
-        };
         Binary b = new Binary(4);
         b.print();
         b.solve();
