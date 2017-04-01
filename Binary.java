@@ -63,6 +63,40 @@ public class Binary {
         return where;
     }
 
+    private boolean areRowAndColUnique(int row, int col, int symbol){
+        board[row][col] = symbol;
+        int[] rowOfInsertion = getRow(row);
+        int[] colOfInsertion = getCol(col);
+
+        boolean rowHasEmptyField = hasEmptyField(rowOfInsertion);
+        boolean colHasEmptyField = hasEmptyField(colOfInsertion);
+
+        for(int i = 0; i < board.length; i++){
+            if(!rowHasEmptyField){
+                if(i != row){
+                    int[] rowToCompare = getRow(i);
+                    if(Arrays.equals(rowOfInsertion,rowToCompare)){
+                        board[row][col] = -1;
+                        return false;
+                    }
+                }
+            }
+
+            if(!colHasEmptyField){
+                if(i != col){
+                    int[] colToCompare = getCol(i);
+                    if(Arrays.equals(colOfInsertion,colToCompare)){
+                        board[row][col] = -1;
+                        return false;
+                    }
+                }
+            }
+        }
+
+        board[col][row] = -1;
+        return true;
+    }
+
     private boolean hasEmptyField(int[] array){
         for(int i = 0; i < array.length; i++){
             if(array[i] == -1)
