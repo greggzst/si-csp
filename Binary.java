@@ -123,7 +123,7 @@ public class Binary {
         return row;
     }
 
-    private boolean isNumberInRowAndColConsistent(int row, int col, int symbol){
+    private boolean isNumberOfSymbolsNextToInRowAndColConsistent(int row, int col, int symbol){
         int symRowOccurence = 0;
         int symColOccurence = 0;
 
