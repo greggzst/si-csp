@@ -19,7 +19,7 @@ public class Graph {
         variableValuesList = new HashMap<>();
 
         List<String> coloursList = new ArrayList<>();
-        for(int c = 0; c <= colours; c++){
+        for(int c = 1; c <= colours; c++){
             coloursList.add("" + c + "");
         }
 
@@ -78,7 +78,7 @@ public class Graph {
             if(Arrays.equals(k,key)){
                 List<String> selectedColour = new ArrayList<>();
                 selectedColour.add(colour);
-                variableValuesList.put(key,selectedColour);
+                variableValuesList.put(k,selectedColour);
             }else{
                 List<String> colourList = variableValuesList.get(k);
                 colourList.remove(colour);
