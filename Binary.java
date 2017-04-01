@@ -92,7 +92,7 @@ public class Binary {
             }
         }
 
-        board[col][row] = -1;
+        board[row][col] = -1;
         return true;
     }
 
@@ -131,9 +131,55 @@ public class Binary {
         board[row][col] = symbol;
 
         int[] rowOfInsertion = getRow(row);
+        int[] colOfInsertion = getCol(col);
 
+        boolean rowHasEmptyField = hasEmptyField(rowOfInsertion);
+        boolean colHasEmptyField = hasEmptyField(colOfInsertion);
+
+        if(rowHasEmptyField || colHasEmptyField){
+            board[row][col] = -1;
+            return true;
+        }
+
+        int numOfZerosRow = countSymbolOccurence(rowOfInsertion,0);
+        int numOfOnesRow = countSymbolOccurence(rowOfInsertion,1);
+        int numOfZerosCol = countSymbolOccurence(colOfInsertion,0);
+        int numOfOnesCol = countSymbolOccurence(colOfInsertion,1);
+
+        for(int i = 0; i < row; i++){
+            if(!rowHasEmptyField){
+                if(i != row){
+                    int[] rowToCompare = getRow(i);
+                    int numOfZeros = countSymbolOccurence(rowToCompare,0);
+                    int numOfOnes = countSymbolOccurence(rowToCompare,1);
+
+                    if(numOfOnes != numOfOnesRow || numOfZeros != numOfZerosRow){
+                        board[row][col] = -1;
+                        return false;
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < col; i++){
+            if(!colHasEmptyField){
+                if(i != col){
+                    int[] colToCompare = getCol(i);
+                    int numOfZeros = countSymbolOccurence(colToCompare,0);
+                    int numOfOnes = countSymbolOccurence(colToCompare,1);
+
+                    if(numOfOnes != numOfOnesCol || numOfZeros != numOfZerosCol){
+                        board[row][col] = -1;
+                        return false;
+                    }
+                }
+            }
+        }
+        board[row][col] = -1;
+        return true;
 
     }
+
 
     private boolean isNumberOfSymbolsNextToInRowAndColConsistent(int row, int col, int symbol){
         int symRowOccurence = 0;
@@ -184,7 +230,7 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(4);
+        Binary b = new Binary(3);
         b.print();
         b.solve();
         b.print();
