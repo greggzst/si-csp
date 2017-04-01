@@ -32,9 +32,10 @@ public class Graph {
             }
         }
 
+
     }
 
-    public boolean colourGraph(){
+    public boolean colourGraphBacktrack(){
         int[] first = findFirstUnColoured();
         int row = first[0];
         int col = first[1];
@@ -45,7 +46,7 @@ public class Graph {
         for(int c = 1; c <= colours; c++){
             if(canBeColoured(row,col,c)){
                 graph[row][col] = c;
-                if(colourGraph()){
+                if(colourGraphBacktrack()){
                     return true;
                 }
                 else{
@@ -164,7 +165,7 @@ public class Graph {
     public static void main(String[] args){
         Graph g = new Graph(4);
         g.print();
-        g.colourGraph();
+        g.colourGraphBacktrack();
         System.out.println();
         g.print();
     }
