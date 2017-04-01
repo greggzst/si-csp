@@ -63,6 +63,15 @@ public class Binary {
         return where;
     }
 
+    private boolean hasEmptyField(int[] array){
+        for(int i = 0; i < array.length; i++){
+            if(array[i] == -1)
+                return true;
+        }
+
+        return false;
+    }
+
     private int[] getCol(int col){
         int[] column = new int[board.length];
         for(int i = 0; i < board.length; i++){
