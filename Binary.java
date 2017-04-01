@@ -132,6 +132,18 @@ public class Binary {
         return occurence;
     }
 
+    private boolean isNumberOfSymbolsInRowAndColConsistent(int row, int col){
+        int[] colOfInsertion = getCol(col);
+        int[] rowOfInsertion = getRow(row);
+
+        int numberOfZerosInCol = countSymbolOccurence(colOfInsertion,0);
+        int numberOfOnesInCol = countSymbolOccurence(colOfInsertion,1);
+        int numberOfZerosInRow = countSymbolOccurence(rowOfInsertion,0);
+        int numberOfOnesInRow = countSymbolOccurence(rowOfInsertion, 1);
+
+        return (numberOfOnesInCol == numberOfOnesInRow) && (numberOfZerosInCol == numberOfZerosInRow);
+    }
+
     private boolean isNumberOfSymbolsNextToInRowAndColConsistent(int row, int col, int symbol){
         int symRowOccurence = 0;
         int symColOccurence = 0;
