@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class Graph {
         if(row == -1)
             return true;
 
-        List<String> colours = variableValuesList.get(first);
+        List<String> colours = getColourList(first);
         for(String c : colours){
             if(canBeColoured(row,col,Integer.parseInt(c))){
                 graph[row][col] = Integer.parseInt(c);
@@ -62,9 +63,19 @@ public class Graph {
         return false;
     }
 
-    public void changeColourPossibilities(int[] key, String colour){
+    private List<String> getColourList(int[] key){
         for(int[] k : variableValuesList.keySet()){
-            if(k == key){
+            if(Arrays.equals(k,key)){
+                return variableValuesList.get(k);
+            }
+        }
+
+        return null;
+    }
+
+    private void changeColourPossibilities(int[] key, String colour){
+        for(int[] k : variableValuesList.keySet()){
+            if(Arrays.equals(k,key)){
                 List<String> selectedColour = new ArrayList<>();
                 selectedColour.add(colour);
                 variableValuesList.put(key,selectedColour);
@@ -206,7 +217,7 @@ public class Graph {
     public static void main(String[] args){
         Graph g = new Graph(4);
         g.print();
-        g.colourGraphBacktrack();
+        g.colourGraphForwardChecking();
         System.out.println();
         g.print();
     }
