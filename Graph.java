@@ -47,9 +47,19 @@ public class Graph {
         for(String c : colours){
             if(canBeColoured(row,col,Integer.parseInt(c))){
                 graph[row][col] = Integer.parseInt(c);
+                HashMap<int[],List<String>> variableValuesCopy = new HashMap<>(variableValuesList);
+                changeColourPossibilities(first,c);
 
+                if(colourGraphForwardChecking()){
+                    return true;
+                }else{
+                    graph[row][col] = 0;
+                    removePairs(row,col);
+                    variableValuesList = variableValuesCopy;
+                }
             }
         }
+        return false;
     }
 
     public void changeColourPossibilities(int[] key, String colour){
