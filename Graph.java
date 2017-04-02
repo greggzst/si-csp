@@ -50,9 +50,9 @@ public class Graph {
             if(canBeColoured(row,col,Integer.parseInt(c))){
                 graph[row][col] = Integer.parseInt(c);
                 HashMap<int[],List<String>> variableValuesCopy = copyVariableValues(variableValuesList);
-                changeColourPossibilities(first);
+                changeColourPossibilities(first,c);
 
-                if(variableValuesList.size() == 0){
+                if(noValues()){
                     return false;
                 }else{
                     if(colourGraphForwardChecking()){
@@ -89,6 +89,15 @@ public class Graph {
         return null;
     }
 
+    private boolean noValues(){
+        for(int[] key : variableValuesList.keySet()){
+            if(variableValuesList.get(key).size() == 0)
+                return true;
+        }
+
+        return false;
+    }
+
     private List<String> getColoursInPairs(int colour){
         List<String> colourPairsForColour = new ArrayList<>();
         for(Tuple t : colourPairs){
@@ -98,12 +107,31 @@ public class Graph {
         return colourPairsForColour;
     }
 
-    private void changeColourPossibilities(int[] key){
+    private void changeColourPossibilities(int[] key,String colour){
         int[] r = null;
+        int[] firstNeighbour = {key[0], key[1]+1};
+        int[] secondNeighbour = {key[0]+1, key[1]};
         for(int[] k : variableValuesList.keySet()){
             if(Arrays.equals(k,key)){
                 r = k;
-                break;
+            }else{
+                //delete colour for all neighbours
+                if(Arrays.equals(k,firstNeighbour)){
+                    List<String> colours = variableValuesList.get(k);
+                    List<String> pair = getColoursInPairs(Integer.parseInt(colour));
+                    colours.remove(colour);
+                    colours.removeAll(pair);
+                    variableValuesList.put(k,colours);
+                }
+
+                if(Arrays.equals(k,secondNeighbour)){
+                    List<String> colours = variableValuesList.get(k);
+                    List<String> pair = getColoursInPairs(Integer.parseInt(colour));
+                    colours.remove(colour);
+                    colours.removeAll(pair);
+                    variableValuesList.put(k,colours);
+                }
+
             }
         }
 
