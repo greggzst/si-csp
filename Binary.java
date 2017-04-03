@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class Binary {
     private int[][] board;
-    private int[] domain = {1,0};
+    private List<String> domain;
 
     public Binary(int n){
         board = new int[n][n];
@@ -18,6 +18,9 @@ public class Binary {
                 board[i][j] = -1;
             }
         }
+        domain = new ArrayList<>();
+        domain.add("1");
+        domain.add("0");
     }
 
     public boolean solve(){
@@ -32,9 +35,9 @@ public class Binary {
         if(row == -1)
             return true;
 
-        for(Integer d : domain){
-            if(areConstraintsSatisfied(row,col,d)){
-                board[row][col] = d;
+        for(String d : domain){
+            if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
+                board[row][col] = Integer.parseInt(d);
 
                 if(solveBacktrack(puzzle)){
                     return true;
