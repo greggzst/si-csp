@@ -1,8 +1,6 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by GreggJakubiak on 29.03.2017.
@@ -23,7 +21,7 @@ public class Binary {
         domain.add("0");
     }
 
-    public boolean solve(){
+    public boolean solveBacktrack(){
         return solveBacktrack(board);
     }
 
@@ -259,7 +257,7 @@ public class Binary {
     public static void main(String[] args){
         Binary b = new Binary(4);
         b.print();
-        b.solve();
+        b.solveBacktrack();
         b.print();
     }
 
