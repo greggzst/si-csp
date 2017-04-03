@@ -1,37 +1,24 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by GreggJakubiak on 30.03.2017.
  */
 public class Graph {
-    private int colours;
+    private List<String> coloursList;
     private int[][] graph;
     private List<Tuple> colourPairs;
-    private HashMap<int[],List<String>> variableValuesList;
 
     public Graph(int n){
         graph = new int[n][n];
-        colours = n % 2 == 0 ? 2 * n : 2 * n + 1;
         colourPairs = new ArrayList<>();
-        variableValuesList = new HashMap<>();
 
-        List<String> coloursList = new ArrayList<>();
+        int colours = n % 2 == 0 ? 2 * n : 2 * n + 1;
+
+        coloursList = new ArrayList<>();
         for(int c = 1; c <= colours; c++){
             coloursList.add("" + c + "");
         }
 
-        for(int i = 0; i < graph.length; i++){
-            for(int j = 0; j < graph.length; j++){
-                int[] elem = new int[2];
-                elem[0] = i;
-                elem[1] = j;
-
-                variableValuesList.put(elem,new ArrayList<String>(coloursList));
-            }
-        }
 
 
     }
@@ -45,98 +32,27 @@ public class Graph {
         if(row == -1)
             return true;
 
-        List<String> colours = getColourList(first);
-        for(String c : colours){
+        Iterator<String> colourIterator = coloursList.iterator();
+        while(colourIterator.hasNext()){
+            String c = colourIterator.next();
             if(canBeColoured(row,col,Integer.parseInt(c))){
                 graph[row][col] = Integer.parseInt(c);
-                HashMap<int[],List<String>> variableValuesCopy = copyVariableValues(variableValuesList);
-                changeColourPossibilities(first,c);
-
-                if(noValues()){
-                    return false;
-                }else{
-                    if(colourGraphForwardChecking()){
-                        return true;
-                    }else{
-                        graph[row][col] = 0;
-                        removePairs(row,col);
-                        variableValuesList = variableValuesCopy;
-                    }
+                if(colourGraphBacktrack()){
+                    return true;
                 }
+                else{
+                    graph[row][col] = 0;
+                    removePairs(row,col);
+                }
+
             }
-        }
-        return false;
-    }
-
-    private HashMap<int[],List<String>> copyVariableValues(HashMap<int[],List<String>> v){
-        HashMap<int[],List<String>> copy = new HashMap<>();
-        for(int[] key : v.keySet()){
-            int[] k = new int[2];
-            k[0] = key[0];
-            k[1] = key[1];
-            copy.put(k,new ArrayList<String>(v.get(key)));
-        }
-        return copy;
-    }
-
-    private List<String> getColourList(int[] key){
-        for(int[] k : variableValuesList.keySet()){
-            if(Arrays.equals(k,key)){
-                return new ArrayList<>(variableValuesList.get(k));
-            }
-        }
-
-        return null;
-    }
-
-    private boolean noValues(){
-        for(int[] key : variableValuesList.keySet()){
-            if(variableValuesList.get(key).size() == 0)
-                return true;
+            colourIterator.remove();
         }
 
         return false;
+
     }
 
-    private List<String> getColoursInPairs(int colour){
-        List<String> colourPairsForColour = new ArrayList<>();
-        for(Tuple t : colourPairs){
-            if(t.y == colour)
-                colourPairsForColour.add("" + t.x + "");
-        }
-        return colourPairsForColour;
-    }
-
-    private void changeColourPossibilities(int[] key,String colour){
-        int[] r = null;
-        int[] firstNeighbour = {key[0], key[1]+1};
-        int[] secondNeighbour = {key[0]+1, key[1]};
-        for(int[] k : variableValuesList.keySet()){
-            if(Arrays.equals(k,key)){
-                r = k;
-            }else{
-                //delete colour for all neighbours
-                if(Arrays.equals(k,firstNeighbour)){
-                    List<String> colours = variableValuesList.get(k);
-                    List<String> pair = getColoursInPairs(Integer.parseInt(colour));
-                    colours.remove(colour);
-                    colours.removeAll(pair);
-                    variableValuesList.put(k,colours);
-                }
-
-                if(Arrays.equals(k,secondNeighbour)){
-                    List<String> colours = variableValuesList.get(k);
-                    List<String> pair = getColoursInPairs(Integer.parseInt(colour));
-                    colours.remove(colour);
-                    colours.removeAll(pair);
-                    variableValuesList.put(k,colours);
-                }
-
-            }
-        }
-
-        variableValuesList.remove(r);
-    }
 
     public boolean colourGraphBacktrack(){
         int[] first = findFirstUnColoured();
@@ -146,9 +62,9 @@ public class Graph {
         if(row == -1)
             return true;
 
-        for(int c = 1; c <= colours; c++){
-            if(canBeColoured(row,col,c)){
-                graph[row][col] = c;
+        for(String c : coloursList){
+            if(canBeColoured(row,col,Integer.parseInt(c))){
+                graph[row][col] = Integer.parseInt(c);
                 if(colourGraphBacktrack()){
                     return true;
                 }
