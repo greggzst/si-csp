@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,6 +20,36 @@ public class Binary {
         domain = new ArrayList<>();
         domain.add("1");
         domain.add("0");
+    }
+
+    public boolean solveForwardChecking(){
+        return solveForwardChecking(board);
+    }
+
+    private boolean solveForwardChecking(int[][] puzzle){
+        int[] where = findFirstEmpty();
+        int row = where[0];
+        int col = where[1];
+
+        if(row == -1)
+            return true;
+        Iterator<String> domainIterator = domain.iterator();
+        while(domainIterator.hasNext()){
+            String d = domainIterator.next();
+            if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
+                board[row][col] = Integer.parseInt(d);
+
+                if(solveBacktrack(puzzle)){
+                    return true;
+                }else{
+                    board[row][col] = -1;
+                }
+            }
+
+            domainIterator.remove();
+        }
+
+        return false;
     }
 
     public boolean solveBacktrack(){
@@ -255,9 +286,9 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(4);
+        Binary b = new Binary(8);
         b.print();
-        b.solveBacktrack();
+        b.solveForwardChecking();
         b.print();
     }
 
