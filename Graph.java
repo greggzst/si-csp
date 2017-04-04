@@ -42,7 +42,7 @@ public class Graph {
                 }
                 else{
                     graph[row][col] = 0;
-                    removePairs(row,col);
+                    removePairs(Integer.parseInt(c));
                 }
 
             }
@@ -53,6 +53,35 @@ public class Graph {
 
     }
 
+    public boolean colourGraphBacktrackVariableSelect(){
+        List<Triple> variables = variablesSortedByNeighbours();
+        return colourGraphBacktrackVariableSelect(variables);
+    }
+
+    private boolean colourGraphBacktrackVariableSelect(List<Triple> variables){
+
+        if(variables.size() == 0)
+            return true;
+
+        int row = variables.get(0).x;
+        int col = variables.get(0).y;
+
+        for(String c : coloursList){
+            if(canBeColoured(row,col,Integer.parseInt(c))){
+                graph[row][col] = Integer.parseInt(c);
+                Triple t = variables.remove(0);
+                if(colourGraphBacktrackVariableSelect(variables)){
+                    return true;
+                }else{
+                    graph[row][col] = 0;
+                    removePairs(Integer.parseInt(c));
+                    variables.add(0,t);
+                }
+            }
+        }
+
+        return false;
+    }
 
     public boolean colourGraphBacktrack(){
         int[] first = findFirstUnColoured();
@@ -70,7 +99,7 @@ public class Graph {
                 }
                 else{
                     graph[row][col] = 0;
-                    removePairs(row,col);
+                    removePairs(Integer.parseInt(c));
                 }
 
             }
@@ -79,13 +108,15 @@ public class Graph {
         return false;
     }
 
-    private void removePairs(int row, int col){
-        if(row == 0 && col !=0 || row != 0 && col == 0){
-            colourPairs.remove(colourPairs.size() - 1);
-        }else if(row != 0 && col != 0){
-            colourPairs.remove(colourPairs.size() - 1);
-            colourPairs.remove(colourPairs.size() - 1);
+    private void removePairs(int colour){
+        Iterator<Tuple> tupleIterator = colourPairs.iterator();
+        while (tupleIterator.hasNext()){
+            Tuple t = tupleIterator.next();
+            if(t.y == colour){
+                tupleIterator.remove();
+            }
         }
+
     }
 
     private int[] findFirstUnColoured(){
@@ -113,42 +144,102 @@ public class Graph {
 
         boolean condition = false;
 
-        if(row == 0 && col ==0){
-            condition = true;
+        if(row == 0 && col == 0){
+            condition = graph[row][col + 1] != colour && graph[row + 1][col] != colour;
         }else if(row == 0 && col != 0){
-            condition = graph[row][col - 1] != colour;
+            if(col + 1 < graph.length){
+                condition = graph[row][col - 1] != colour && graph[row][col + 1] != colour && graph[row + 1][col] != colour;
+            }else{
+                condition = graph[row][col - 1] != colour && graph[row + 1][col] != colour;
+            }
+
         }else if(row != 0 && col == 0){
-            condition = graph[row - 1][col] != colour;
+            if(row + 1 < graph.length){
+                condition = graph[row - 1][col] != colour && graph[row][col + 1] != colour && graph[row + 1][col] != colour;
+            }else{
+                condition = graph[row - 1][col] != colour && graph[row][col + 1] != colour;
+            }
         }else if(row != 0 && col != 0){
-            condition = graph[row - 1][col] != colour && graph[row][col - 1] != colour;
+            if(row + 1 < graph.length && col + 1 < graph.length){
+                condition = graph[row - 1][col] != colour && graph[row][col - 1] != colour
+                        && graph[row + 1][col] != colour && graph[row][col + 1] != colour;
+            }else if(row + 1 < graph.length){
+                condition = graph[row - 1][col] != colour && graph[row][col - 1] != colour
+                        && graph[row + 1][col] != colour;
+            }else if(col + 1 < graph.length){
+                condition = graph[row - 1][col] != colour && graph[row][col - 1] != colour
+                        && graph[row][col + 1] != colour;
+            }else{
+                condition = graph[row - 1][col] != colour && graph[row][col - 1] != colour;
+            }
         }
 
         return condition;
     }
 
+
     private boolean isOnlyOneColourPairConnection(int row, int col, int colour){
 
         Tuple t1 = null;
         Tuple t2 = null;
+        Tuple t3 = null;
+        Tuple t4 = null;
 
 
         if(row == 0 && col ==0){
-            return true;
+            //if next neighbours are empty return true
+            if(graph[row + 1][col] != 0 && graph[row][col + 1] != 0){
+                return true;
+            }else{
+                if(graph[row + 1][col] != 0){
+                    t1 = new Tuple(graph[row+1][col],colour);
+                }
+
+                if(graph[row][col + 1] != 0){
+                    t2 = new Tuple(graph[row][col+1],colour);
+                }
+            }
         }
         else if (row != 0 && col == 0){
             t1 = new Tuple(graph[row-1][col],colour);
 
+            if(graph[row][col+1] != 0){
+                t2 = new Tuple(graph[row][col+1],colour);
+            }
+
+            if(row + 1 < graph.length && graph[row + 1][col] != 0){
+                t3 = new Tuple(graph[row+1][col],colour);
+            }
+
         }else if (row == 0 && col != 0){
-            t2 = new Tuple(graph[row][col - 1], colour);
+            t1 = new Tuple(graph[row][col - 1], colour);
+
+            if(graph[row+1][col] != 0){
+                t2 = new Tuple(graph[row+1][col], colour);
+            }
+
+            if(col + 1 < graph.length && graph[row][col+1] != 0){
+                t3 = new Tuple(graph[row][col+1],colour);
+            }
         }
         else if (row != 0 && col != 0){
             t1 = new Tuple(graph[row - 1][col], colour);
             t2 = new Tuple(graph[row][col - 1], colour);
 
+            if(row + 1 < graph.length && graph[row+1][col] != 0){
+                t3 = new Tuple(graph[row+1][col], colour);
+            }
+
+            if(col + 1 < graph.length && graph[row][col+1] != 0){
+                t4 = new Tuple(graph[row][col+1],colour);
+            }
+
         }
 
         boolean hasFirstTuple = false;
         boolean hasSecondTuple = false;
+        boolean hasThirdTuple = false;
+        boolean hasFourthTuple = false;
 
         if(t1 != null) {
             hasFirstTuple = colourPairs.contains(t1);
@@ -158,7 +249,15 @@ public class Graph {
             hasSecondTuple = colourPairs.contains(t2);
         }
 
-        if(hasFirstTuple || hasSecondTuple){
+        if(t3 != null){
+            hasThirdTuple = colourPairs.contains(t3);
+        }
+
+        if(t4 != null){
+            hasFourthTuple = colourPairs.contains(t4);
+        }
+
+        if(hasFirstTuple || hasSecondTuple || hasThirdTuple || hasFourthTuple){
             return false;
         }
 
@@ -167,6 +266,12 @@ public class Graph {
 
         if(t2 != null && !hasSecondTuple)
             colourPairs.add(t2);
+
+        if(t3 != null && !hasThirdTuple)
+            colourPairs.add(t3);
+
+        if(t4 != null && !hasFourthTuple)
+            colourPairs.add(t4);
 
         return true;
 
@@ -209,7 +314,7 @@ public class Graph {
     public static void main(String[] args){
         Graph g = new Graph(4);
         g.print();
-        g.colourGraphForwardChecking();
+        g.colourGraphBacktrackVariableSelect();
         System.out.println();
         g.print();
     }
