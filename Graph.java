@@ -172,6 +172,20 @@ public class Graph {
 
     }
 
+    private int countNeighbours(int row, int col){
+        int neighbours = 0;
+        int n = graph.length - 1;
+        if((row == 0 && col == 0) || (row == n && col ==0) || (row == 0 && col == n) ||(row == n && col == n)){
+            neighbours = 2;
+        }else if((row == 0 && col != 0) || (row == n && col != 0) || (row != 0 && col == 0) || (row != 0 && col == n)){
+            neighbours = 3;
+        }else{
+            neighbours = 4;
+        }
+
+        return neighbours;
+    }
+
     public void print(){
         for(int[] g : graph){
             for(int c : g){
