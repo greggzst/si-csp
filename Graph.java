@@ -186,6 +186,17 @@ public class Graph {
         return neighbours;
     }
 
+    private List<Triple> variablesSortedByNeighbours(){
+        List<Triple> vars = new ArrayList<>();
+        for(int row = 0; row < graph.length; row++){
+            for(int col = 0; col < graph.length; col++){
+                vars.add(new Triple(row,col,countNeighbours(row,col)));
+            }
+        }
+        vars.sort(new TripleComparator());
+        return vars;
+    }
+
     public void print(){
         for(int[] g : graph){
             for(int c : g){
