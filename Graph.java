@@ -42,7 +42,7 @@ public class Graph {
                 }
                 else{
                     graph[row][col] = 0;
-                    removePairs(Integer.parseInt(c));
+                    removePairs(row,col);
                 }
 
             }
@@ -74,7 +74,7 @@ public class Graph {
                     return true;
                 }else{
                     graph[row][col] = 0;
-                    removePairs(Integer.parseInt(c));
+                    removePairs(row,col);
                     variables.add(0,t);
                 }
             }
@@ -98,8 +98,8 @@ public class Graph {
                     return true;
                 }
                 else{
+                    removePairs(row,col);
                     graph[row][col] = 0;
-                    removePairs(Integer.parseInt(c));
                 }
 
             }
@@ -108,13 +108,58 @@ public class Graph {
         return false;
     }
 
-    private void removePairs(int colour){
-        Iterator<Tuple> tupleIterator = colourPairs.iterator();
-        while (tupleIterator.hasNext()){
-            Tuple t = tupleIterator.next();
-            if(t.y == colour){
-                tupleIterator.remove();
+    private void removePairs(int row, int col){
+        if(row == 0 & col == 0){
+            if(graph[row][col + 1] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
             }
+
+            if(graph[row + 1][col] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
+            }
+        }
+        else if (row != 0 && col == 0){
+
+            if(row + 1 < graph.length && graph[row + 1][col] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
+            }
+
+            if(graph[row][col+1] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
+            }
+
+            if(graph[row-1][col] != 0)
+                colourPairs.remove(colourPairs.size() - 1);
+
+        }else if (row == 0 && col != 0){
+            if(col + 1 < graph.length && graph[row][col+1] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
+            }
+
+            if(graph[row+1][col] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
+            }
+
+            if(graph[row][col-1] != 0)
+                colourPairs.remove(colourPairs.size() - 1);
+
+        }
+        else if (row != 0 && col != 0){
+
+            if(col + 1 < graph.length && graph[row][col+1] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
+            }
+
+            if(row + 1 < graph.length && graph[row+1][col] != 0){
+                colourPairs.remove(colourPairs.size() - 1);
+            }
+
+            if(graph[row][col - 1] != 0)
+                colourPairs.remove(colourPairs.size() - 1);
+
+            if(graph[row - 1][col] != 0)
+                colourPairs.remove(colourPairs.size() - 1);
+
         }
 
     }
@@ -201,7 +246,8 @@ public class Graph {
             }
         }
         else if (row != 0 && col == 0){
-            t1 = new Tuple(graph[row-1][col],colour);
+            if(graph[row-1][col] != 0)
+                t1 = new Tuple(graph[row-1][col],colour);
 
             if(graph[row][col+1] != 0){
                 t2 = new Tuple(graph[row][col+1],colour);
@@ -212,7 +258,8 @@ public class Graph {
             }
 
         }else if (row == 0 && col != 0){
-            t1 = new Tuple(graph[row][col - 1], colour);
+            if(graph[row][col-1] != 0)
+                t1 = new Tuple(graph[row][col - 1], colour);
 
             if(graph[row+1][col] != 0){
                 t2 = new Tuple(graph[row+1][col], colour);
@@ -223,8 +270,11 @@ public class Graph {
             }
         }
         else if (row != 0 && col != 0){
-            t1 = new Tuple(graph[row - 1][col], colour);
-            t2 = new Tuple(graph[row][col - 1], colour);
+            if(graph[row - 1][col] != 0)
+                t1 = new Tuple(graph[row - 1][col], colour);
+
+            if(graph[row][col - 1] != 0)
+                t2 = new Tuple(graph[row][col - 1], colour);
 
             if(row + 1 < graph.length && graph[row+1][col] != 0){
                 t3 = new Tuple(graph[row+1][col], colour);
