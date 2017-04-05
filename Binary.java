@@ -127,13 +127,16 @@ public class Binary {
             }
         }else{
             int s1 = symbol == 0 ? 1 : 0;
-            board[row][col] = s1;
+            if(areConstraintsSatisfied(row,col,s1)){
+                board[row][col] = s1;
 
-            if(solveBacktrackValueHeuristic(puzzle,most)){
-                return true;
-            }else{
-                board[row][col] = -1;
+                if(solveBacktrackValueHeuristic(puzzle,most)){
+                    return true;
+                }else{
+                    board[row][col] = -1;
+                }
             }
+            return false;
 
         }
 
@@ -386,7 +389,7 @@ public class Binary {
         Binary b = new Binary(8,12);
         b.print();
         System.out.println();
-        b.solveBacktrack();
+        b.solveBacktrackValueHeuristic(true);
         b.print();
     }
 
