@@ -104,45 +104,6 @@ public class Binary {
         return false;
     }
 
-    public boolean solveBacktrackValueHeuristic(boolean most){
-        return solveBacktrackValueHeuristic(board,most);
-    }
-
-    private boolean solveBacktrackValueHeuristic(int[][] puzzle, boolean most){
-        int[] where = findFirstEmpty();
-        int row = where[0];
-        int col = where[1];
-
-        if(row == -1)
-            return true;
-        int symbol = occuringSymbol(most);
-
-        if(areConstraintsSatisfied(row,col,symbol)){
-            board[row][col] = symbol;
-
-            if(solveBacktrackValueHeuristic(puzzle,most)){
-                return true;
-            }else{
-                board[row][col] = -1;
-            }
-        }else{
-            int s1 = symbol == 0 ? 1 : 0;
-            if(areConstraintsSatisfied(row,col,s1)){
-                board[row][col] = s1;
-
-                if(solveBacktrackValueHeuristic(puzzle,most)){
-                    return true;
-                }else{
-                    board[row][col] = -1;
-                }
-            }
-            return false;
-
-        }
-
-        return false;
-    }
-
     private int[] findFirstEmpty(){
         int[] where = {-1, -1};
         for(int row = 0; row < board.length; row++){
@@ -156,6 +117,35 @@ public class Binary {
         }
 
         return where;
+    }
+
+    private int rowOccuringSymbol(int row, boolean most){
+        int occurenceOfOne = 0;
+        int occurenceOfZero = 0;
+
+        for(int i = 0; i < board.length; i++){
+            if(board[row][i] == 1){
+                occurenceOfOne++;
+            }else if(board[row][i] == 0){
+                occurenceOfZero++;
+            }
+        }
+
+        if(most){
+            if(occurenceOfOne > occurenceOfZero)
+                return 1;
+            else if(occurenceOfOne < occurenceOfZero)
+                return 0;
+            else
+                return -1;
+        }else{
+            if(occurenceOfOne > occurenceOfZero)
+                return 0;
+            else if(occurenceOfOne < occurenceOfZero)
+                return 1;
+            else
+                return -1;
+        }
     }
 
     private boolean areRowAndColUnique(int row, int col, int symbol){
@@ -340,38 +330,6 @@ public class Binary {
                 && nHasOnesAndZeros(row,col,symbol);
     }
 
-    private int occuringSymbol(boolean returnMost){
-        int occurenceOfOne = 0;
-        int occurenceOfZero = 0;
-
-        for(int i = 0; i < board.length; i++){
-            for(int j = 0; j < board.length; j++){
-                if(board[i][j] == 0){
-                    occurenceOfZero++;
-                }else if(board[i][j] == 1){
-                    occurenceOfOne++;
-                }
-            }
-        }
-
-        if(returnMost){
-            if(occurenceOfOne > occurenceOfZero)
-                return 1;
-            else if(occurenceOfOne < occurenceOfZero)
-                return 0;
-            else
-                return -1;
-        }else{
-            if(occurenceOfOne > occurenceOfZero)
-                return 0;
-            else if(occurenceOfOne < occurenceOfZero)
-                return 1;
-            else
-                return -1;
-        }
-
-
-    }
 
     public void print(){
         for(int[] b : board){
@@ -386,10 +344,10 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8,12);
+        Binary b = new Binary(8);
         b.print();
         System.out.println();
-        b.solveBacktrackValueHeuristic(true);
+        b.solveBacktrack();
         b.print();
     }
 
