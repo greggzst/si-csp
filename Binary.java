@@ -111,6 +111,8 @@ public class Binary {
         return false;
     }
 
+
+
     private int[] findFirstEmpty(){
         int[] where = {-1, -1};
         for(int row = 0; row < board.length; row++){
@@ -126,32 +128,28 @@ public class Binary {
         return where;
     }
 
-    private int rowOccuringSymbol(int row, boolean most){
-        int occurenceOfOne = 0;
-        int occurenceOfZero = 0;
+    private boolean isRowOccuringSymbol(int row, int symbol,boolean most){
+        int symbolOccurence = 0;
+        int otherOccurence = 0;
 
         for(int i = 0; i < board.length; i++){
-            if(board[row][i] == 1){
-                occurenceOfOne++;
-            }else if(board[row][i] == 0){
-                occurenceOfZero++;
-            }
+            if(board[row][i] == symbol)
+                symbolOccurence++;
+            else if(board[row][i] != -1)
+                otherOccurence++;
+
         }
 
         if(most){
-            if(occurenceOfOne > occurenceOfZero)
-                return 1;
-            else if(occurenceOfOne < occurenceOfZero)
-                return 0;
+            if(symbolOccurence > otherOccurence)
+                return true;
             else
-                return -1;
+                return false;
         }else{
-            if(occurenceOfOne > occurenceOfZero)
-                return 0;
-            else if(occurenceOfOne < occurenceOfZero)
-                return 1;
+            if(symbolOccurence > otherOccurence)
+                return false;
             else
-                return -1;
+                return true;
         }
     }
 
@@ -351,7 +349,7 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8,15);
+        Binary b = new Binary(8,35);
         b.print();
         System.out.println();
         b.solveBacktrack();
