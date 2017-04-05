@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by GreggJakubiak on 29.03.2017.
@@ -20,6 +17,33 @@ public class Binary {
         domain = new ArrayList<>();
         domain.add("1");
         domain.add("0");
+    }
+
+    public Binary(int n, int m){
+        board = new int[n][n];
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board.length; j++){
+                board[i][j] = -1;
+            }
+        }
+        domain = new ArrayList<>();
+        domain.add("1");
+        domain.add("0");
+        fillRandomFields(m);
+    }
+
+    private void fillRandomFields(int m){
+        Random random = new Random();
+        for(int i = 0; i < m; i++){
+            int row = (int) (random.nextDouble() * board.length);
+            int col = (int) (random.nextDouble() * board.length);
+
+            for(String d : domain){
+                if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
+                    board[row][col] = Integer.parseInt(d);
+                }
+            }
+        }
     }
 
     public boolean solveForwardChecking(){
@@ -217,6 +241,7 @@ public class Binary {
         int symRowOccurence = 0;
         int symColOccurence = 0;
 
+        board[row][col] = symbol;
         for(int i = 0; i < board.length; i++){
             if(board[row][i] == symbol){
                 symRowOccurence++;
@@ -225,6 +250,7 @@ public class Binary {
             }
 
             if(symRowOccurence >= 3){
+                board[row][col] = -1;
                 return false;
             }
 
@@ -235,10 +261,11 @@ public class Binary {
             }
 
             if(symColOccurence >= 3){
+                board[row][col] = -1;
                 return false;
             }
         }
-
+        board[row][col] = -1;
         return true;
     }
 
@@ -286,9 +313,9 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8);
+        Binary b = new Binary(8,8);
         b.print();
-        b.solveForwardChecking();
+        b.solveBacktrack();
         b.print();
     }
 
