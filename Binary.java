@@ -301,7 +301,7 @@ public class Binary {
                 && nHasOnesAndZeros(row,col,symbol);
     }
 
-    private int mostOccuringSymbol(){
+    private int occuringSymbol(boolean returnMost){
         int occurenceOfOne = 0;
         int occurenceOfZero = 0;
 
@@ -315,10 +315,19 @@ public class Binary {
             }
         }
 
-        if(occurenceOfOne > occurenceOfZero)
-            return 1;
-        else
-            return 0;
+        if(returnMost){
+            if(occurenceOfOne > occurenceOfZero)
+                return 1;
+            else
+                return 0;
+        }else{
+            if(occurenceOfOne > occurenceOfZero)
+                return 0;
+            else
+                return 1;
+        }
+
+
     }
 
     public void print(){
