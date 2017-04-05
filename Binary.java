@@ -318,13 +318,17 @@ public class Binary {
         if(returnMost){
             if(occurenceOfOne > occurenceOfZero)
                 return 1;
-            else
+            else if(occurenceOfOne < occurenceOfZero)
                 return 0;
+            else
+                return -1;
         }else{
             if(occurenceOfOne > occurenceOfZero)
                 return 0;
-            else
+            else if(occurenceOfOne < occurenceOfZero)
                 return 1;
+            else
+                return -1;
         }
 
 
