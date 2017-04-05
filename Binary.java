@@ -111,7 +111,34 @@ public class Binary {
         return false;
     }
 
+    public boolean solveHeuristic(boolean most){
+        return solveHeuristic(board,most);
+    }
 
+    private boolean solveHeuristic(int[][] puzzle, boolean most){
+        int[] where = findFirstEmpty();
+        int row = where[0];
+        int col = where[1];
+
+        if(row == -1)
+            return true;
+
+        for(String d : domain){
+            if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
+                if(isRowOccuringSymbol(row,Integer.parseInt(d),most)){
+                    board[row][col] = Integer.parseInt(d);
+
+                    if(solveBacktrack(puzzle)){
+                        return true;
+                    }else{
+                        board[row][col] = -1;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
     private int[] findFirstEmpty(){
         int[] where = {-1, -1};
@@ -349,10 +376,10 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8,35);
+        Binary b = new Binary(8,3);
         b.print();
         System.out.println();
-        b.solveBacktrack();
+        b.solveHeuristic(false);
         b.print();
     }
 
