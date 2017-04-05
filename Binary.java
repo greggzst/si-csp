@@ -301,6 +301,26 @@ public class Binary {
                 && nHasOnesAndZeros(row,col,symbol);
     }
 
+    private int mostOccuringSymbol(){
+        int occurenceOfOne = 0;
+        int occurenceOfZero = 0;
+
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board.length; j++){
+                if(board[i][j] == 0){
+                    occurenceOfZero++;
+                }else if(board[i][j] == 1){
+                    occurenceOfOne++;
+                }
+            }
+        }
+
+        if(occurenceOfOne > occurenceOfZero)
+            return 1;
+        else
+            return 0;
+    }
+
     public void print(){
         for(int[] b : board){
             for(Integer i : b){
