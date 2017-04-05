@@ -104,6 +104,42 @@ public class Binary {
         return false;
     }
 
+    public boolean solveBacktrackValueHeuristic(boolean most){
+        return solveBacktrackValueHeuristic(board,most);
+    }
+
+    private boolean solveBacktrackValueHeuristic(int[][] puzzle, boolean most){
+        int[] where = findFirstEmpty();
+        int row = where[0];
+        int col = where[1];
+
+        if(row == -1)
+            return true;
+        int symbol = occuringSymbol(most);
+
+        if(areConstraintsSatisfied(row,col,symbol)){
+            board[row][col] = symbol;
+
+            if(solveBacktrackValueHeuristic(puzzle,most)){
+                return true;
+            }else{
+                board[row][col] = -1;
+            }
+        }else{
+            int s1 = symbol == 0 ? 1 : 0;
+            board[row][col] = s1;
+
+            if(solveBacktrackValueHeuristic(puzzle,most)){
+                return true;
+            }else{
+                board[row][col] = -1;
+            }
+
+        }
+
+        return false;
+    }
+
     private int[] findFirstEmpty(){
         int[] where = {-1, -1};
         for(int row = 0; row < board.length; row++){
