@@ -41,6 +41,7 @@ public class Binary {
             for(String d : domain){
                 if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
                     board[row][col] = Integer.parseInt(d);
+                    break;
                 }
             }
         }
@@ -313,8 +314,9 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8,8);
+        Binary b = new Binary(8,12);
         b.print();
+        System.out.println();
         b.solveBacktrack();
         b.print();
     }
