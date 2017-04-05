@@ -38,11 +38,18 @@ public class Binary {
             int row = (int) (random.nextDouble() * board.length);
             int col = (int) (random.nextDouble() * board.length);
 
-            for(String d : domain){
-                if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
-                    board[row][col] = Integer.parseInt(d);
-                    break;
+            while(board[row][col] != -1){
+                row = (int) (random.nextDouble() * board.length);
+                col = (int) (random.nextDouble() * board.length);
+            }
+
+            int symbol = (int) (random.nextDouble() * 2);
+
+            while(board[row][col] == -1){
+                if(areConstraintsSatisfied(row,col,symbol)){
+                    board[row][col] = symbol;
                 }
+                symbol = (int) (random.nextDouble() * 2);
             }
         }
     }
@@ -344,7 +351,7 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8);
+        Binary b = new Binary(8,15);
         b.print();
         System.out.println();
         b.solveBacktrack();
