@@ -4,23 +4,14 @@ import java.util.*;
  * Created by GreggJakubiak on 30.03.2017.
  */
 public class Graph {
-    private List<String> coloursList;
     private int[][] graph;
     private List<Tuple> colourPairs;
+    private int colours;
 
     public Graph(int n){
         graph = new int[n][n];
         colourPairs = new ArrayList<>();
-
-        int colours = n % 2 == 0 ? 2 * n : 2 * n + 1;
-
-        coloursList = new ArrayList<>();
-        for(int c = 1; c <= colours; c++){
-            coloursList.add("" + c + "");
-        }
-
-
-
+        colours = n % 2 == 0 ? 2 * n : 2 * n + 1;
     }
 
 
@@ -364,7 +355,7 @@ public class Graph {
     public static void main(String[] args){
         Graph g = new Graph(6);
         g.print();
-        g.colourGraphBacktrackVariableSelect();
+        g.colourGraphForwardChecking();
         System.out.println();
         g.print();
     }
