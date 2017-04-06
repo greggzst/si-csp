@@ -25,7 +25,7 @@ public class Graph {
         if(row == -1)
             return true;
 
-        List<String> colours = getDomain(first,variableDomains);
+        List<String> colours = getDomain(first);
         for(String c : colours){
             int colour = Integer.parseInt(c);
             if(canBeColoured(row,col,colour)){
@@ -102,7 +102,7 @@ public class Graph {
         return copy;
     }
 
-    private List<String> getDomain(int[] var, HashMap<int[],List<String>> variableDomains){
+    private List<String> getDomain(int[] var){
         for(int[] key : variableDomains.keySet()){
             if(Arrays.equals(key,var)){
                 return variableDomains.get(key);
