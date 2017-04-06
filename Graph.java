@@ -37,7 +37,7 @@ public class Graph {
             String c = colourIterator.next();
             if(canBeColoured(row,col,Integer.parseInt(c))){
                 graph[row][col] = Integer.parseInt(c);
-                if(colourGraphBacktrack()){
+                if(colourGraphForwardChecking()){
                     return true;
                 }
                 else{
@@ -109,7 +109,7 @@ public class Graph {
     }
 
     private void removePairs(int row, int col){
-        if(row == 0 & col == 0){
+        if(row == 0 && col == 0){
             if(graph[row][col + 1] != 0){
                 colourPairs.remove(colourPairs.size() - 1);
             }
@@ -362,7 +362,7 @@ public class Graph {
     }
 
     public static void main(String[] args){
-        Graph g = new Graph(4);
+        Graph g = new Graph(6);
         g.print();
         g.colourGraphBacktrackVariableSelect();
         System.out.println();
