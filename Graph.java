@@ -57,9 +57,9 @@ public class Graph {
         int row = variables.get(0).x;
         int col = variables.get(0).y;
 
-        for(String c : coloursList){
-            if(canBeColoured(row,col,Integer.parseInt(c))){
-                graph[row][col] = Integer.parseInt(c);
+        for(int c = 1; c <= colours; c++){
+            if(canBeColoured(row,col,c)){
+                graph[row][col] = c;
                 Triple t = variables.remove(0);
                 if(colourGraphBacktrackVariableSelect(variables)){
                     return true;
@@ -82,9 +82,9 @@ public class Graph {
         if(row == -1)
             return true;
 
-        for(String c : coloursList){
-            if(canBeColoured(row,col,Integer.parseInt(c))){
-                graph[row][col] = Integer.parseInt(c);
+        for(int c = 1; c <= colours; c++){
+            if(canBeColoured(row,col,c)){
+                graph[row][col] = c;
                 if(colourGraphBacktrack()){
                     return true;
                 }
