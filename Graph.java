@@ -7,15 +7,17 @@ public class Graph {
     private int[][] graph;
     private List<Tuple> colourPairs;
     private int colours;
+    private HashMap<int[],List<String>> variableDomains;
 
     public Graph(int n){
         graph = new int[n][n];
         colourPairs = new ArrayList<>();
         colours = n % 2 == 0 ? 2 * n : 2 * n + 1;
+        variableDomains = prepareDomainsForVariables();
     }
 
+    public boolean colourGraphForwardChecking(){
 
-    private boolean colourGraphForwardChecking(){
         int[] first = findFirstUnColoured();
         int row = first[0];
         int col = first[1];
@@ -23,25 +25,110 @@ public class Graph {
         if(row == -1)
             return true;
 
-        Iterator<String> colourIterator = coloursList.iterator();
-        while(colourIterator.hasNext()){
-            String c = colourIterator.next();
-            if(canBeColoured(row,col,Integer.parseInt(c))){
-                graph[row][col] = Integer.parseInt(c);
+        List<String> colours = getDomain(first,variableDomains);
+        for(String c : colours){
+            int colour = Integer.parseInt(c);
+            if(canBeColoured(row,col,colour)){
+                graph[row][col] = colour;
+                HashMap<int[],List<String>> copy = copyVariableDomains(variableDomains);
+                changeVariableDomains(first, colour);
+
                 if(colourGraphForwardChecking()){
                     return true;
                 }
                 else{
                     graph[row][col] = 0;
                     removePairs(row,col);
+                    variableDomains = copy;
                 }
 
             }
-            colourIterator.remove();
         }
 
         return false;
 
+    }
+
+    private void changeVariableDomains(int[] var, int colour){
+        int[] firstNeighbour = {var[0], var[1] + 1};
+        int[] secondNeighbour = {var[0] + 1, var[1]};
+        int[] domainToDelete = null;
+
+        for(int[] key : variableDomains.keySet()){
+            if(Arrays.equals(key,var)){
+                domainToDelete = key;
+            }else{
+                if(Arrays.equals(key,firstNeighbour)){
+                    List<String> colours = variableDomains.get(key);
+                    List<String> coloursInPair = getColoursInPair(colour);
+                    colours.remove("" + colour + "");
+                    colours.removeAll(coloursInPair);
+                    variableDomains.put(key,colours);
+                }
+
+                if(Arrays.equals(key,secondNeighbour)){
+                    List<String> colours = variableDomains.get(key);
+                    List<String> coloursInPair = getColoursInPair(colour);
+                    colours.remove("" + colour + "");
+                    colours.removeAll(coloursInPair);
+                    variableDomains.put(key,colours);
+                }
+            }
+        }
+
+        variableDomains.remove(domainToDelete);
+    }
+
+    private List<String> getColoursInPair(int colour){
+        List<String> coloursInPair = new ArrayList<>();
+        for(Tuple t : colourPairs){
+            if(t.y == colour){
+                coloursInPair.add("" + t.x + "");
+            }
+        }
+
+        return coloursInPair;
+    }
+
+    private HashMap<int[],List<String>> copyVariableDomains(HashMap<int[],List<String>> variableDomains){
+        HashMap<int[],List<String>> copy = new HashMap<>();
+        for(int[] key : variableDomains.keySet()){
+            int[] k = new int[2];
+            k[0] = key[0];
+            k[1] = key[1];
+            copy.put(k,new ArrayList<String>(variableDomains.get(key)));
+        }
+
+        return copy;
+    }
+
+    private List<String> getDomain(int[] var, HashMap<int[],List<String>> variableDomains){
+        for(int[] key : variableDomains.keySet()){
+            if(Arrays.equals(key,var)){
+                return variableDomains.get(key);
+            }
+        }
+
+        return null;
+    }
+
+    private HashMap<int[], List<String>> prepareDomainsForVariables(){
+        HashMap<int[],List<String>> variableDomains = new HashMap<>();
+        List<String> domain = new ArrayList<String>();
+        for(int c = 1; c <= colours; c++){
+            domain.add("" + c + "");
+        }
+
+        for(int i = 0; i < graph.length; i++){
+            for(int j = 0; j < graph.length; j++){
+                int[] var = new int[2];
+                var[0] = i;
+                var[1] = j;
+                variableDomains.put(var, new ArrayList<String>(domain));
+            }
+        }
+
+        return variableDomains;
     }
 
     public boolean colourGraphBacktrackVariableSelect(){
