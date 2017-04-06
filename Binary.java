@@ -71,7 +71,7 @@ public class Binary {
             if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
                 board[row][col] = Integer.parseInt(d);
 
-                if(solveBacktrack(puzzle)){
+                if(solveForwardChecking(puzzle)){
                     return true;
                 }else{
                     board[row][col] = -1;
