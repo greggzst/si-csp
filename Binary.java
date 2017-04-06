@@ -6,6 +6,7 @@ import java.util.*;
 public class Binary {
     private int[][] board;
     private int[] domain = {1, 0};
+    private HashMap<int[],List<String>> variableDomains;
 
     public Binary(int n){
         board = new int[n][n];
@@ -14,6 +15,8 @@ public class Binary {
                 board[i][j] = -1;
             }
         }
+
+        variableDomains = prepareDomainsForVariables();
     }
 
     public Binary(int n, int m){
@@ -24,6 +27,7 @@ public class Binary {
             }
         }
         fillRandomFields(m);
+        variableDomains = prepareDomainsForVariables();
     }
 
     private void fillRandomFields(int m){
@@ -59,23 +63,106 @@ public class Binary {
 
         if(row == -1)
             return true;
-        Iterator<String> domainIterator = domain.iterator();
-        while(domainIterator.hasNext()){
-            String d = domainIterator.next();
-            if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
-                board[row][col] = Integer.parseInt(d);
+
+        List<String> variableDomain = getDomain(where);
+
+        for(String d : variableDomain){
+            int symbol = Integer.parseInt(d);
+            if(areConstraintsSatisfied(row,col,symbol)){
+                board[row][col] = symbol;
+                HashMap<int[],List<String>> copy = copyVariableDomains(variableDomains);
+                changeVariableDomains(where,symbol);
 
                 if(solveForwardChecking(puzzle)){
                     return true;
                 }else{
                     board[row][col] = -1;
+                    variableDomains = copy;
                 }
             }
 
-            domainIterator.remove();
         }
 
         return false;
+    }
+
+    private void changeVariableDomains(int[] var, int symbol){
+        int[] domainToRemove = null;
+        int[] back = {var[0], var[1] - 1};
+        int[] up = {var[0] - 1, var[1]};
+
+        boolean backOK = back[1] != -1;
+        boolean upOK = up[0] != -1;
+
+        int[] first = {var[0], var[1] + 2};
+        int[] second = {var[0] + 2, var[1]};
+
+        for(int[] key : variableDomains.keySet()){
+            if(Arrays.equals(key,var)){
+                domainToRemove = key;
+            }else{
+                if(Arrays.equals(key,first)){
+                    if(backOK && board[back[0]][back[1]] == symbol){
+                        List<String> domain = variableDomains.get(key);
+                        domain.remove("" + symbol + "");
+                        variableDomains.put(key,domain);
+                    }
+                }
+
+                if(Arrays.equals(key,second)){
+                    if(upOK && board[up[0]][up[1]] == symbol){
+                        List<String> domain = variableDomains.get(key);
+                        domain.remove("" + symbol + "");
+                        variableDomains.put(key,domain);
+                    }
+                }
+            }
+        }
+
+        variableDomains.remove(domainToRemove);
+    }
+
+    private List<String> getDomain(int[] var){
+        for(int[] key : variableDomains.keySet()){
+            if(Arrays.equals(key,var)){
+                return variableDomains.get(key);
+            }
+        }
+
+        return null;
+    }
+
+    private HashMap<int[],List<String>> copyVariableDomains(HashMap<int[],List<String>> variableDomains){
+        HashMap<int[],List<String>> copy = new HashMap<>();
+        for(int[] key : variableDomains.keySet()){
+            int[] k = new int[2];
+            k[0] = key[0];
+            k[1] = key[1];
+            copy.put(k,new ArrayList<String>(variableDomains.get(key)));
+        }
+
+        return copy;
+    }
+
+    private HashMap<int[], List<String>> prepareDomainsForVariables(){
+        HashMap<int[],List<String>> variableDomains = new HashMap<>();
+        List<String> variableDom = new ArrayList<String>();
+        for(int d : domain){
+            variableDom.add("" + d + "");
+        }
+
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board.length; j++){
+                if(board[i][j] == -1){
+                    int[] var = new int[2];
+                    var[0] = i;
+                    var[1] = j;
+                    variableDomains.put(var, new ArrayList<String>(variableDom));
+                }
+            }
+        }
+
+        return variableDomains;
     }
 
     public boolean solveBacktrack(){
@@ -370,7 +457,7 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8,3);
+        Binary b = new Binary(8,4);
         b.print();
         System.out.println();
         b.solveForwardChecking();
