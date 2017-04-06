@@ -5,7 +5,7 @@ import java.util.*;
  */
 public class Binary {
     private int[][] board;
-    private List<String> domain;
+    private int[] domain = {1, 0};
 
     public Binary(int n){
         board = new int[n][n];
@@ -14,9 +14,6 @@ public class Binary {
                 board[i][j] = -1;
             }
         }
-        domain = new ArrayList<>();
-        domain.add("1");
-        domain.add("0");
     }
 
     public Binary(int n, int m){
@@ -26,9 +23,6 @@ public class Binary {
                 board[i][j] = -1;
             }
         }
-        domain = new ArrayList<>();
-        domain.add("1");
-        domain.add("0");
         fillRandomFields(m);
     }
 
@@ -96,9 +90,9 @@ public class Binary {
         if(row == -1)
             return true;
 
-        for(String d : domain){
-            if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
-                board[row][col] = Integer.parseInt(d);
+        for(int d : domain){
+            if(areConstraintsSatisfied(row,col,d)){
+                board[row][col] = d;
 
                 if(solveBacktrack(puzzle)){
                     return true;
@@ -123,12 +117,12 @@ public class Binary {
         if(row == -1)
             return true;
 
-        for(String d : domain){
-            if(areConstraintsSatisfied(row,col,Integer.parseInt(d))){
-                if(isRowOccuringSymbol(row,Integer.parseInt(d),most)){
-                    board[row][col] = Integer.parseInt(d);
+        for(int d : domain){
+            if(areConstraintsSatisfied(row,col,d)){
+                if(isRowOccuringSymbol(row,d,most)){
+                    board[row][col] = d;
 
-                    if(solveBacktrack(puzzle)){
+                    if(solveHeuristic(puzzle,most)){
                         return true;
                     }else{
                         board[row][col] = -1;
@@ -379,7 +373,7 @@ public class Binary {
         Binary b = new Binary(8,3);
         b.print();
         System.out.println();
-        b.solveHeuristic(false);
+        b.solveForwardChecking();
         b.print();
     }
 
