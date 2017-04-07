@@ -169,7 +169,7 @@ public class Graph {
         if(row == -1)
             return true;
 
-        if(colourPairs.size() > 2){
+        if(colourPairs.size() > 1){
             int c = getColour(most);
 
             if(canBeColoured(row,col,c)){
@@ -519,7 +519,7 @@ public class Graph {
     public static void main(String[] args){
         Graph g = new Graph(8);
         g.print();
-        g.colourGraphValueSelect(false);
+        g.colourGraphValueSelect(true);
         System.out.println();
         g.print();
     }
