@@ -199,6 +199,30 @@ public class Binary {
         return where;
     }
 
+    public boolean solveHeuristic(boolean most){
+        int rowIndex = getFilledRowIndex(most);
+        if(rowIndex == -1)
+            return true;
+
+        int[] first = findFirstEmptyInRow(rowIndex);
+        int row = first[0];
+        int col = first[1];
+
+        for(int d : domain){
+            if(areConstraintsSatisfied(row,col,d)){
+                board[row][col] = d;
+
+                if(solveHeuristic(most)){
+                    return true;
+                }else{
+                    board[row][col] = -1;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private int[] findFirstEmptyInRow(int row){
         int[] first = {row,-1};
         for(int col = 0; col < board.length; col++){
@@ -208,6 +232,20 @@ public class Binary {
             }
         }
         return first;
+    }
+
+    private List<Integer> getUnfilledRows(){
+        List<Integer> list = new ArrayList<>();
+        for(int row = 0; row < board.length; row++){
+            for(int col = 0; col < board.length; col++){
+                if(board[row][col] == -1){
+                    list.add(row);
+                    break;
+                }
+            }
+        }
+
+        return list;
     }
 
     private int getFilledRowIndex(boolean most){
@@ -432,10 +470,10 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8,6);
+        Binary b = new Binary(8,12);
         b.print();
         System.out.println();
-        b.solveForwardChecking();
+        b.solveHeuristic(false);
         b.print();
     }
 
