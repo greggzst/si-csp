@@ -207,7 +207,16 @@ public class Binary {
         return where;
     }
 
-    
+    private int[] findFirstEmptyInRow(int row){
+        int[] first = {row,-1};
+        for(int col = 0; col < board.length; col++){
+            if(board[row][col] == -1){
+                first[1] = col;
+                return first;
+            }
+        }
+        return first;
+    }
 
     private int getFilledRowIndex(boolean most){
         int[] row = getRow(0);
