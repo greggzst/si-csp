@@ -161,6 +161,83 @@ public class Graph {
         return false;
     }
 
+    public boolean colourGraphValueSelect(boolean most){
+        int[] first = findFirstUnColoured();
+        int row = first[0];
+        int col = first[1];
+
+        if(row == -1)
+            return true;
+
+        if(colourPairs.size() > 2){
+            int c = getColour(most);
+
+            if(canBeColoured(row,col,c)){
+                graph[row][col] = c;
+                if(colourGraphValueSelect(most)){
+                    return true;
+                }
+                else{
+                    removePairs(row,col);
+                    graph[row][col] = 0;
+                }
+            }
+        }
+
+        for(int c = 1; c <= colours; c++){
+            if(canBeColoured(row,col,c)){
+                graph[row][col] = c;
+                if(colourGraphValueSelect(most)){
+                    return true;
+                }
+                else{
+                    removePairs(row,col);
+                    graph[row][col] = 0;
+                }
+
+            }
+        }
+
+        return false;
+
+    }
+
+    private int getColour(boolean most){
+        HashMap<Integer,Integer> colourAmountMap = new HashMap<>();
+        for (Tuple t : colourPairs){
+
+            if(!colourAmountMap.containsKey(t.x)){
+                colourAmountMap.put(t.x,1);
+            }else{
+                int newVal = colourAmountMap.get(t.x) + 1;
+                colourAmountMap.put(t.x,newVal);
+            }
+
+            if(!colourAmountMap.containsKey(t.y)){
+                colourAmountMap.put(t.y,1);
+            }else{
+                int newVal = colourAmountMap.get(t.y) + 1;
+                colourAmountMap.put(t.y,newVal);
+            }
+        }
+
+        Map.Entry<Integer,Integer> lookingFor = null;
+
+        for(Map.Entry<Integer,Integer> entry : colourAmountMap.entrySet()){
+            if(most){
+                if(lookingFor == null || entry.getValue() > lookingFor.getValue()){
+                    lookingFor = entry;
+                }
+            }else{
+                if(lookingFor == null || entry.getValue() < lookingFor.getValue()){
+                    lookingFor = entry;
+                }
+            }
+        }
+
+        return lookingFor.getKey();
+    }
+
     public boolean colourGraphBacktrack(){
         int[] first = findFirstUnColoured();
         int row = first[0];
@@ -440,9 +517,9 @@ public class Graph {
     }
 
     public static void main(String[] args){
-        Graph g = new Graph(6);
+        Graph g = new Graph(8);
         g.print();
-        g.colourGraphForwardChecking();
+        g.colourGraphValueSelect(false);
         System.out.println();
         g.print();
     }
