@@ -234,7 +234,7 @@ public class Binary {
         return first;
     }
 
-    private List<Integer> getUnfilledRows(){
+    private List<Integer> getUnfilledRowsIndexes(){
         List<Integer> list = new ArrayList<>();
         for(int row = 0; row < board.length; row++){
             for(int col = 0; col < board.length; col++){
@@ -249,12 +249,17 @@ public class Binary {
     }
 
     private int getFilledRowIndex(boolean most){
-        int[] row = getRow(0);
+        List<Integer> unfilledRowsIndexes = getUnfilledRowsIndexes();
+
+        if(unfilledRowsIndexes.size() == 0){
+            return -1;
+        }
+        int[] row = getRow(unfilledRowsIndexes.get(0));
         int emptyFields = countSymbolOccurence(row, -1);
         int rowIndex = 0;
 
-        for(int i = 1; i < board.length; i++){
-            int emptyFieldsAmount = countSymbolOccurence(getRow(i),-1);
+        for(int i = 1; i < unfilledRowsIndexes.size(); i++){
+            int emptyFieldsAmount = countSymbolOccurence(getRow(unfilledRowsIndexes.get(i)),-1);
             if(most){
                 if(emptyFields < emptyFieldsAmount){
                     emptyFields = emptyFieldsAmount;
@@ -268,10 +273,7 @@ public class Binary {
             }
         }
 
-        if(emptyFields == 0)
-            return -1;
-
-        return rowIndex;
+        return unfilledRowsIndexes.get(rowIndex);
     }
 
     private boolean areRowAndColUnique(int row, int col, int symbol){
@@ -473,7 +475,7 @@ public class Binary {
         Binary b = new Binary(8,12);
         b.print();
         System.out.println();
-        b.solveHeuristic(false);
+        b.solveHeuristic(true);
         b.print();
     }
 
