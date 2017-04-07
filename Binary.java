@@ -207,6 +207,8 @@ public class Binary {
         return where;
     }
 
+    
+
     private int getFilledRowIndex(boolean most){
         int[] row = getRow(0);
         int emptyFields = countSymbolOccurence(row, -1);
@@ -226,6 +228,9 @@ public class Binary {
                 }
             }
         }
+
+        if(emptyFields == 0)
+            return -1;
 
         return rowIndex;
     }
