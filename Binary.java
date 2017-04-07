@@ -53,10 +53,6 @@ public class Binary {
     }
 
     public boolean solveForwardChecking(){
-        return solveForwardChecking(board);
-    }
-
-    private boolean solveForwardChecking(int[][] puzzle){
         int[] where = findFirstEmpty();
         int row = where[0];
         int col = where[1];
@@ -73,7 +69,7 @@ public class Binary {
                 HashMap<int[],List<String>> copy = copyVariableDomains(variableDomains);
                 changeVariableDomains(where,symbol);
 
-                if(solveForwardChecking(puzzle)){
+                if(solveForwardChecking()){
                     return true;
                 }else{
                     board[row][col] = -1;
@@ -166,10 +162,6 @@ public class Binary {
     }
 
     public boolean solveBacktrack(){
-        return solveBacktrack(board);
-    }
-
-    private boolean solveBacktrack(int[][] puzzle){
         int[] where = findFirstEmpty();
         int row = where[0];
         int col = where[1];
@@ -181,7 +173,7 @@ public class Binary {
             if(areConstraintsSatisfied(row,col,d)){
                 board[row][col] = d;
 
-                if(solveBacktrack(puzzle)){
+                if(solveBacktrack()){
                     return true;
                 }else{
                     board[row][col] = -1;
@@ -440,10 +432,10 @@ public class Binary {
     }
 
     public static void main(String[] args){
-        Binary b = new Binary(8,7);
+        Binary b = new Binary(8,6);
         b.print();
         System.out.println();
-        b.solveBacktrack();
+        b.solveForwardChecking();
         b.print();
     }
 
