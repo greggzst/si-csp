@@ -207,6 +207,29 @@ public class Binary {
         return where;
     }
 
+    private int getFilledRow(boolean most){
+        int[] row = getRow(0);
+        int emptyFields = countSymbolOccurence(row, -1);
+        int rowIndex = 0;
+
+        for(int i = 1; i < board.length; i++){
+            int emptyFieldsAmount = countSymbolOccurence(getRow(i),-1);
+            if(most){
+                if(emptyFields < emptyFieldsAmount){
+                    emptyFields = emptyFieldsAmount;
+                    rowIndex = i;
+                }
+            }else{
+                if(emptyFields > emptyFieldsAmount){
+                    emptyFields = emptyFieldsAmount;
+                    rowIndex = i;
+                }
+            }
+        }
+
+        return rowIndex;
+    }
+
     private boolean areRowAndColUnique(int row, int col, int symbol){
         board[row][col] = symbol;
         int[] rowOfInsertion = getRow(row);
