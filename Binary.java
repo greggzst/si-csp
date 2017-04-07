@@ -207,31 +207,6 @@ public class Binary {
         return where;
     }
 
-    private boolean isRowOccuringSymbol(int row, int symbol,boolean most){
-        int symbolOccurence = 0;
-        int otherOccurence = 0;
-
-        for(int i = 0; i < board.length; i++){
-            if(board[row][i] == symbol)
-                symbolOccurence++;
-            else if(board[row][i] != -1)
-                otherOccurence++;
-
-        }
-
-        if(most){
-            if(symbolOccurence > otherOccurence)
-                return true;
-            else
-                return false;
-        }else{
-            if(symbolOccurence > otherOccurence)
-                return false;
-            else
-                return true;
-        }
-    }
-
     private boolean areRowAndColUnique(int row, int col, int symbol){
         board[row][col] = symbol;
         int[] rowOfInsertion = getRow(row);
