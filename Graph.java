@@ -38,7 +38,7 @@ public class Graph {
                 }
                 else{
                     graph[row][col] = 0;
-                    removePairs(c);
+                    removePairs(colour);
                     variableDomains = copy;
                 }
 
@@ -265,10 +265,12 @@ public class Graph {
 
     private List<Tuple> coloursInPair(int colour){
         List<Tuple> cl = new ArrayList<>();
-        for(Tuple t : colourPairs){
-            if(t.y == colour){
-                cl.add(t);
-            }
+        int i = colourPairs.size() - 1;
+        Tuple t = colourPairs.get(i);
+        while(t.y == colour){
+            cl.add(t);
+            i--;
+            t = colourPairs.get(i);
         }
 
         return cl;
@@ -489,7 +491,7 @@ public class Graph {
     public static void main(String[] args){
         long startTime = 0;
         long endTime = 0;
-        Graph g1 = new Graph(8);
+        Graph g1 = new Graph(6);
         g1.print();
         startTime = System.currentTimeMillis();
         g1.colourGraphBacktrack();
