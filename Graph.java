@@ -350,7 +350,7 @@ public class Graph {
 
         if(row == 0 && col ==0){
             //if next neighbours are empty return true
-            if(graph[row + 1][col] != 0 && graph[row][col + 1] != 0){
+            if(graph[row + 1][col] == 0 && graph[row][col + 1] == 0){
                 return true;
             }else{
                 if(graph[row + 1][col] != 0){
@@ -491,7 +491,7 @@ public class Graph {
     public static void main(String[] args){
         long startTime = 0;
         long endTime = 0;
-        Graph g1 = new Graph(6);
+        Graph g1 = new Graph(8);
         g1.print();
         startTime = System.currentTimeMillis();
         g1.colourGraphBacktrack();
