@@ -263,6 +263,17 @@ public class Graph {
         return false;
     }
 
+    private List<Tuple> coloursInPair(int colour){
+        List<Tuple> cl = new ArrayList<>();
+        for(Tuple t : colourPairs){
+            if(t.y == colour){
+                cl.add(t);
+            }
+        }
+
+        return cl;
+    }
+
     private void removePairs(int row, int col){
         if(row == 0 && col == 0){
             if(graph[row][col + 1] != 0){
@@ -516,11 +527,479 @@ public class Graph {
         }
     }
 
+    public void clear(){
+        for(int row = 0; row < graph.length; row++){
+            for(int col = 0; col < graph.length; col++){
+                graph[row][col] = 0;
+            }
+        }
+        colourPairs.clear();
+        variableDomains = prepareDomainsForVariables();
+    }
+
     public static void main(String[] args){
-        Graph g = new Graph(8);
-        g.print();
-        g.colourGraphValueSelect(true);
+        long startTime = 0;
+        long endTime = 0;
+        Graph g1 = new Graph(8);
+        g1.print();
+        startTime = System.currentTimeMillis();
+        g1.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
         System.out.println();
-        g.print();
+        g1.print();
+        System.out.println("Backtrack " + g1.graph.length + " : " + (endTime-startTime));
+        g1.clear();
+        System.out.println();
+
+        g1.print();
+        startTime = System.currentTimeMillis();
+        g1.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g1.print();
+        System.out.println("Forward checking " + g1.graph.length + " : " + (endTime-startTime));
+        g1.clear();
+        System.out.println();
+
+        g1.print();
+        startTime = System.currentTimeMillis();
+        g1.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g1.print();
+        System.out.println("Variable Select " + g1.graph.length + " : " + (endTime-startTime));
+        g1.clear();
+        System.out.println();
+
+        g1.print();
+        startTime = System.currentTimeMillis();
+        g1.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g1.print();
+        System.out.println("Value Select Most " + g1.graph.length + " : " + (endTime-startTime));
+        g1.clear();
+        System.out.println();
+
+        g1.print();
+        startTime = System.currentTimeMillis();
+        g1.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g1.print();
+        System.out.println("Value Select Least " + g1.graph.length + " : " + (endTime-startTime));
+        g1.clear();
+        System.out.println();
+
+
+        Graph g2 = new Graph(9);
+        g2.print();
+        startTime = System.currentTimeMillis();
+        g2.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g2.print();
+        System.out.println("Backtrack " + g2.graph.length + " : " + (endTime-startTime));
+        g2.clear();
+        System.out.println();
+
+        g2.print();
+        startTime = System.currentTimeMillis();
+        g2.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g2.print();
+        System.out.println("Forward checking " + g2.graph.length + " : " + (endTime-startTime));
+        g2.clear();
+        System.out.println();
+
+        g2.print();
+        startTime = System.currentTimeMillis();
+        g2.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g2.print();
+        System.out.println("Variable Select " + g2.graph.length + " : " + (endTime-startTime));
+        g2.clear();
+        System.out.println();
+
+        g2.print();
+        startTime = System.currentTimeMillis();
+        g2.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g2.print();
+        System.out.println("Value Select Most " + g2.graph.length + " : " + (endTime-startTime));
+        g2.clear();
+        System.out.println();
+
+        g2.print();
+        startTime = System.currentTimeMillis();
+        g2.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g2.print();
+        System.out.println("Value Select Least " + g2.graph.length + " : " + (endTime-startTime));
+        g2.clear();
+        System.out.println();
+
+        Graph g3 = new Graph(10);
+        g3.print();
+        startTime = System.currentTimeMillis();
+        g3.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g3.print();
+        System.out.println("Backtrack " + g3.graph.length + " : " + (endTime-startTime));
+        g3.clear();
+        System.out.println();
+
+        g3.print();
+        startTime = System.currentTimeMillis();
+        g3.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g3.print();
+        System.out.println("Forward checking " + g3.graph.length + " : " + (endTime-startTime));
+        g3.clear();
+        System.out.println();
+
+        g3.print();
+        startTime = System.currentTimeMillis();
+        g3.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g3.print();
+        System.out.println("Variable Select " + g3.graph.length + " : " + (endTime-startTime));
+        g3.clear();
+        System.out.println();
+
+        g3.print();
+        startTime = System.currentTimeMillis();
+        g3.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g3.print();
+        System.out.println("Value Select Most " + g3.graph.length + " : " + (endTime-startTime));
+        g3.clear();
+        System.out.println();
+
+        g3.print();
+        startTime = System.currentTimeMillis();
+        g3.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g3.print();
+        System.out.println("Value Select Least " + g3.graph.length + " : " + (endTime-startTime));
+        g3.clear();
+        System.out.println();
+
+        Graph g4 = new Graph(11);
+        g4.print();
+        startTime = System.currentTimeMillis();
+        g4.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g4.print();
+        System.out.println("Backtrack " + g4.graph.length + " : " + (endTime-startTime));
+        g4.clear();
+        System.out.println();
+
+        g4.print();
+        startTime = System.currentTimeMillis();
+        g4.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g4.print();
+        System.out.println("Forward checking " + g4.graph.length + " : " + (endTime-startTime));
+        g4.clear();
+        System.out.println();
+
+        g4.print();
+        startTime = System.currentTimeMillis();
+        g4.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g4.print();
+        System.out.println("Variable Select " + g4.graph.length + " : " + (endTime-startTime));
+        g4.clear();
+        System.out.println();
+
+        g4.print();
+        startTime = System.currentTimeMillis();
+        g4.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g4.print();
+        System.out.println("Value Select Most " + g4.graph.length + " : " + (endTime-startTime));
+        g4.clear();
+        System.out.println();
+
+        g4.print();
+        startTime = System.currentTimeMillis();
+        g4.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g4.print();
+        System.out.println("Value Select Least " + g4.graph.length + " : " + (endTime-startTime));
+        g4.clear();
+        System.out.println();
+
+        Graph g5 = new Graph(12);
+        g5.print();
+        startTime = System.currentTimeMillis();
+        g5.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g5.print();
+        System.out.println("Backtrack " + g5.graph.length + " : " + (endTime-startTime));
+        g5.clear();
+        System.out.println();
+
+        g5.print();
+        startTime = System.currentTimeMillis();
+        g5.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g5.print();
+        System.out.println("Forward checking " + g5.graph.length + " : " + (endTime-startTime));
+        g5.clear();
+        System.out.println();
+
+        g5.print();
+        startTime = System.currentTimeMillis();
+        g5.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g5.print();
+        System.out.println("Variable Select " + g5.graph.length + " : " + (endTime-startTime));
+        g5.clear();
+        System.out.println();
+
+        g5.print();
+        startTime = System.currentTimeMillis();
+        g5.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g5.print();
+        System.out.println("Value Select Most " + g5.graph.length + " : " + (endTime-startTime));
+        g5.clear();
+        System.out.println();
+
+        g5.print();
+        startTime = System.currentTimeMillis();
+        g5.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g5.print();
+        System.out.println("Value Select Least " + g5.graph.length + " : " + (endTime-startTime));
+        g5.clear();
+        System.out.println();
+
+        Graph g6 = new Graph(13);
+        g6.print();
+        startTime = System.currentTimeMillis();
+        g6.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g6.print();
+        System.out.println("Backtrack " + g6.graph.length + " : " + (endTime-startTime));
+        g6.clear();
+        System.out.println();
+
+        g6.print();
+        startTime = System.currentTimeMillis();
+        g6.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g6.print();
+        System.out.println("Forward checking " + g6.graph.length + " : " + (endTime-startTime));
+        g6.clear();
+        System.out.println();
+
+        g6.print();
+        startTime = System.currentTimeMillis();
+        g6.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g6.print();
+        System.out.println("Variable Select " + g6.graph.length + " : " + (endTime-startTime));
+        g6.clear();
+        System.out.println();
+
+        g6.print();
+        startTime = System.currentTimeMillis();
+        g6.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g6.print();
+        System.out.println("Value Select Most " + g6.graph.length + " : " + (endTime-startTime));
+        g6.clear();
+        System.out.println();
+
+        g6.print();
+        startTime = System.currentTimeMillis();
+        g6.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g6.print();
+        System.out.println("Value Select Least " + g6.graph.length + " : " + (endTime-startTime));
+        g6.clear();
+        System.out.println();
+
+        Graph g7 = new Graph(14);
+        g7.print();
+        startTime = System.currentTimeMillis();
+        g7.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g7.print();
+        System.out.println("Backtrack " + g7.graph.length + " : " + (endTime-startTime));
+        g7.clear();
+        System.out.println();
+
+        g7.print();
+        startTime = System.currentTimeMillis();
+        g7.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g7.print();
+        System.out.println("Forward checking " + g7.graph.length + " : " + (endTime-startTime));
+        g7.clear();
+        System.out.println();
+
+        g7.print();
+        startTime = System.currentTimeMillis();
+        g7.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g7.print();
+        System.out.println("Variable Select " + g7.graph.length + " : " + (endTime-startTime));
+        g7.clear();
+        System.out.println();
+
+        g7.print();
+        startTime = System.currentTimeMillis();
+        g7.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g7.print();
+        System.out.println("Value Select Most " + g7.graph.length + " : " + (endTime-startTime));
+        g7.clear();
+        System.out.println();
+
+        g7.print();
+        startTime = System.currentTimeMillis();
+        g7.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g7.print();
+        System.out.println("Value Select Least " + g7.graph.length + " : " + (endTime-startTime));
+        g7.clear();
+        System.out.println();
+
+        Graph g8 = new Graph(15);
+        g8.print();
+        startTime = System.currentTimeMillis();
+        g8.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g8.print();
+        System.out.println("Backtrack " + g8.graph.length + " : " + (endTime-startTime));
+        g8.clear();
+        System.out.println();
+
+        g8.print();
+        startTime = System.currentTimeMillis();
+        g8.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g8.print();
+        System.out.println("Forward checking " + g8.graph.length + " : " + (endTime-startTime));
+        g8.clear();
+        System.out.println();
+
+        g8.print();
+        startTime = System.currentTimeMillis();
+        g8.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g8.print();
+        System.out.println("Variable Select " + g8.graph.length + " : " + (endTime-startTime));
+        g8.clear();
+        System.out.println();
+
+        g8.print();
+        startTime = System.currentTimeMillis();
+        g8.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g8.print();
+        System.out.println("Value Select Most " + g8.graph.length + " : " + (endTime-startTime));
+        g8.clear();
+        System.out.println();
+
+        g8.print();
+        startTime = System.currentTimeMillis();
+        g8.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g8.print();
+        System.out.println("Value Select Least " + g8.graph.length + " : " + (endTime-startTime));
+        g8.clear();
+        System.out.println();
+
+        Graph g9 = new Graph(16);
+        g9.print();
+        startTime = System.currentTimeMillis();
+        g9.colourGraphBacktrack();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g9.print();
+        System.out.println("Backtrack " + g9.graph.length + " : " + (endTime-startTime));
+        g9.clear();
+        System.out.println();
+
+        g9.print();
+        startTime = System.currentTimeMillis();
+        g9.colourGraphForwardChecking();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g9.print();
+        System.out.println("Forward checking " + g9.graph.length + " : " + (endTime-startTime));
+        g9.clear();
+        System.out.println();
+
+        g9.print();
+        startTime = System.currentTimeMillis();
+        g9.colourGraphBacktrackVariableSelect();
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g9.print();
+        System.out.println("Variable Select " + g9.graph.length + " : " + (endTime-startTime));
+        g9.clear();
+        System.out.println();
+
+        g9.print();
+        startTime = System.currentTimeMillis();
+        g9.colourGraphValueSelect(true);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g9.print();
+        System.out.println("Value Select Most " + g9.graph.length + " : " + (endTime-startTime));
+        g9.clear();
+        System.out.println();
+
+        g9.print();
+        startTime = System.currentTimeMillis();
+        g9.colourGraphValueSelect(false);
+        endTime = System.currentTimeMillis();
+        System.out.println();
+        g9.print();
+        System.out.println("Value Select Least " + g9.graph.length + " : " + (endTime-startTime));
+        g9.clear();
+        System.out.println();
+
+
     }
 }
