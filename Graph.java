@@ -38,7 +38,7 @@ public class Graph {
                 }
                 else{
                     graph[row][col] = 0;
-                    removePairs(row,col);
+                    removePairs(c);
                     variableDomains = copy;
                 }
 
@@ -152,7 +152,7 @@ public class Graph {
                     return true;
                 }else{
                     graph[row][col] = 0;
-                    removePairs(row,col);
+                    removePairs(c);
                     variables.add(0,t);
                 }
             }
@@ -178,7 +178,7 @@ public class Graph {
                     return true;
                 }
                 else{
-                    removePairs(row,col);
+                    removePairs(c);
                     graph[row][col] = 0;
                 }
             }
@@ -191,7 +191,7 @@ public class Graph {
                     return true;
                 }
                 else{
-                    removePairs(row,col);
+                    removePairs(c);
                     graph[row][col] = 0;
                 }
 
@@ -253,7 +253,7 @@ public class Graph {
                     return true;
                 }
                 else{
-                    removePairs(row,col);
+                    removePairs(c);
                     graph[row][col] = 0;
                 }
 
@@ -274,60 +274,9 @@ public class Graph {
         return cl;
     }
 
-    private void removePairs(int row, int col){
-        if(row == 0 && col == 0){
-            if(graph[row][col + 1] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-
-            if(graph[row + 1][col] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-        }
-        else if (row != 0 && col == 0){
-
-            if(row + 1 < graph.length && graph[row + 1][col] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-
-            if(graph[row][col+1] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-
-            if(graph[row-1][col] != 0)
-                colourPairs.remove(colourPairs.size() - 1);
-
-        }else if (row == 0 && col != 0){
-            if(col + 1 < graph.length && graph[row][col+1] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-
-            if(graph[row+1][col] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-
-            if(graph[row][col-1] != 0)
-                colourPairs.remove(colourPairs.size() - 1);
-
-        }
-        else if (row != 0 && col != 0){
-
-            if(col + 1 < graph.length && graph[row][col+1] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-
-            if(row + 1 < graph.length && graph[row+1][col] != 0){
-                colourPairs.remove(colourPairs.size() - 1);
-            }
-
-            if(graph[row][col - 1] != 0)
-                colourPairs.remove(colourPairs.size() - 1);
-
-            if(graph[row - 1][col] != 0)
-                colourPairs.remove(colourPairs.size() - 1);
-
-        }
-
+    private void removePairs(int colour){
+        List<Tuple> cl = coloursInPair(colour);
+        colourPairs.removeAll(cl);
     }
 
     private int[] findFirstUnColoured(){
